@@ -14,18 +14,18 @@ public class SessionUtilityTest {
 
     @Test
     public void getSessionTest(){
-        Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().getCurrentSession();
+        Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession();
     }
 
     @Test
     public void getSessionTransactionTest(){
         Transaction transaction = SessionUtility.INSTANCE.getSessionFactoryInstance()
-                .getCurrentSession().getTransaction();
+                .openSession().getTransaction();
     }
 
     @Test
     public void beginSessionTransactionTest(){
         Transaction transaction = SessionUtility.INSTANCE.getSessionFactoryInstance()
-                .getCurrentSession().beginTransaction();
+                .openSession().beginTransaction();
     }
 }

@@ -8,9 +8,17 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.refactorhythm.model.Reimbursement;
+import com.refactorhythm.util.SessionUtility;
 import org.apache.log4j.Logger;
 
 import com.refactorhythm.model.User;
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 
 /*
  * Purpose of this Dao is to send/retrieve info about a reimbursement
@@ -18,51 +26,24 @@ import com.refactorhythm.model.User;
  */
 public class UserDao implements GenericDao <User> {
 	private static final Logger LOGGER = Logger.getLogger(UserDao.class);
-
-	private User objectConstructor(ResultSet rs) throws SQLException {
-		return new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
-						rs.getString(6), rs.getInt(7));
-	}
 	
 	@Override
 	public List<User> getList() {
-		List<User> l = new ArrayList<User>();
-		
-		try (Connection c = ConnectionUtil.getInstance().getConnection()) {
-			String qSql = "SELECT * FROM ers_users";
-			Statement s = c.createStatement();
-			ResultSet rs = s.executeQuery(qSql);
-			
-			while(rs.next()) {
-				l.add(objectConstructor(rs));
-			}
-			LOGGER.debug("A list of users was retrieved from the database.");
-		} catch (SQLException e) {
-			e.printStackTrace();
-			LOGGER.error("An attempt to get all users from the database failed.");
+
+		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {
+			CriteriaBuilder builder = session.getCriteriaBuilder();
+			CriteriaQuery query = builder.createQuery(User.class);
+			query.from(User.class);
+
+			return session.createQuery(query).getResultList();
 		}
-		return l;
 	}
 
 	@Override
 	public User getById(int id) {
-		User u = null;
-		
-		try(Connection c = ConnectionUtil.getInstance().getConnection()) {
-			String qSql = "SELECT * FROM ers_users WHERE ers_users_id = ?";
-			PreparedStatement ps = c.prepareStatement(qSql);
-			ps.setInt(1, id);
-			ResultSet rs = ps.executeQuery();
-			
-			if(rs.next())
-				u = objectConstructor(rs);
-			
-			LOGGER.debug("Information about user ID " + id + " was retrieved from the database.");
-		} catch (SQLException e) {
-			e.printStackTrace();
-			LOGGER.error("An attempt to get info about user ID " + id + " from the database failed.");
+		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {
+			return (User) session.get(User.class, id);
 		}
-		return u;
 	}
 	
 	@Override
@@ -73,36 +54,28 @@ public class UserDao implements GenericDao <User> {
 	
 	@Override
 	public User getByUsername(String username) {
-		User u = null;
-		
-		try(Connection c = ConnectionUtil.getInstance().getConnection()) {
-			String qSql = "SELECT * FROM ers_users WHERE ers_username = ?";
-			PreparedStatement ps = c.prepareStatement(qSql);
-			ps.setString(1, username.toLowerCase());
-			ResultSet rs = ps.executeQuery();
-			
-			if(rs.next()) {
-				//System.out.println("User object was created!");
-				u = objectConstructor(rs);
-			}
-			
-			LOGGER.debug("Information about username " + username + " was retrieved from the database.");
-		} catch (SQLException e) {
-			e.printStackTrace();
-			LOGGER.error("An attempt to get info about username " + username + " from the database failed.");
+		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {
+			return session.createQuery("from User where username= :username", User.class)
+					.setParameter("username", username).uniqueResult();
 		}
-		return u;
 	}
 
 	@Override
 	public void insert(User t) {
-		// TODO Auto-generated method stub
-		
+		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {
+			Transaction transaction = session.beginTransaction();
+			session.persist(t);
+			transaction.commit();
+		}
 	}
 
 	@Override
 	public void delete(User t) {
-		// TODO Auto-generated method stub
+		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {
+			Transaction transaction = session.beginTransaction();
+			session.delete(t);
+			transaction.commit();
+		}
 		
 	}
 }
