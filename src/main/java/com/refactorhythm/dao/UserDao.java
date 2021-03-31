@@ -8,9 +8,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.refactorhythm.util.SessionUtility;
 import org.apache.log4j.Logger;
 
 import com.refactorhythm.model.User;
+import org.hibernate.Session;
 
 /*
  * Purpose of this Dao is to send/retrieve info about a reimbursement
@@ -18,30 +20,10 @@ import com.refactorhythm.model.User;
  */
 public class UserDao implements GenericDao <User> {
 	private static final Logger LOGGER = Logger.getLogger(UserDao.class);
-
-	private User objectConstructor(ResultSet rs) throws SQLException {
-		return new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
-						rs.getString(6), rs.getInt(7));
-	}
 	
 	@Override
 	public List<User> getList() {
-		List<User> l = new ArrayList<User>();
-		
-		try (Connection c = ConnectionUtil.getInstance().getConnection()) {
-			String qSql = "SELECT * FROM ers_users";
-			Statement s = c.createStatement();
-			ResultSet rs = s.executeQuery(qSql);
-			
-			while(rs.next()) {
-				l.add(objectConstructor(rs));
-			}
-			LOGGER.debug("A list of users was retrieved from the database.");
-		} catch (SQLException e) {
-			e.printStackTrace();
-			LOGGER.error("An attempt to get all users from the database failed.");
-		}
-		return l;
+		return null;
 	}
 
 	@Override

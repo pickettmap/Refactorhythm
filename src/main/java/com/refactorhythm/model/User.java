@@ -1,16 +1,26 @@
 package com.refactorhythm.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table (name = "users")
+
 public class User {
+	@Id
 	private int user_id;
+
+	@Column(unique = true)
 	private String username;
+
 	private String password;
+
 	private String firstname;
+
 	private String lastname;
+
+	@Column(unique = true)
 	private String email;
+
 	private int role_id;
 	
 	public User() {
