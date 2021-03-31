@@ -23,11 +23,6 @@ import com.refactorhythm.model.Reimbursement;
  */
 public class ReimbursementDao implements GenericDao<Reimbursement> {
 	private static final Logger LOGGER = Logger.getLogger(ReimbursementDao.class);
-	
-	private Reimbursement objectConstructor(ResultSet rs) throws SQLException {
-		return new Reimbursement(rs.getInt(1), rs.getFloat(2), rs.getTimestamp(3), rs.getTimestamp(4),
-							rs.getString(5), rs.getInt(7), rs.getInt(8), rs.getInt(9), rs.getInt(10));
-	}
 
 	@Override
 	public List<Reimbursement> getList() {
