@@ -1,19 +1,10 @@
 package com.refactorhythm.dao;
 
-import java.sql.Array;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 
-import com.refactorhythm.model.User;
 import com.refactorhythm.util.SessionUtility;
 import org.apache.log4j.Logger;
 
@@ -21,9 +12,6 @@ import com.refactorhythm.model.Reimbursement;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 
 /*
  * Purpose of this Dao is to send/retrieve info about a reimbursement
@@ -34,31 +22,27 @@ public class ReimbursementDao implements GenericDao<Reimbursement> {
 
 	@Override
 	public List<Reimbursement> getList() {
-		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().getCurrentSession()) {
-			CriteriaBuilder builder = session.getCriteriaBuilder();
-			CriteriaQuery query = builder.createQuery(Reimbursement.class);
-			query.from(Reimbursement.class);
-
-			return session.createQuery(query).getResultList();
+		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {
+			return session.createQuery("from Reimbursement", Reimbursement.class).list();
 		}
 	}
 
 	@Override
 	public Reimbursement getById(int id) {
-		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().getCurrentSession()) {
-			return (Reimbursement) session.get(Reimbursement.class, id);
+		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {
+			return session.get(Reimbursement.class, id);
 		}
 	}
 	
 	@Override
 	public List<Reimbursement> getByUserId(int id) {
-		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().getCurrentSession()) {
-			Query query = session.createQuery("from reimbursement");
-			query.setParameter("author",id);
-			return query.getResultList();
+		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {
+			return session.createQuery("from Reimbursement", Reimbursement.class)
+			.setParameter("author", id).getResultList();
 		}
 	}
-	
+
+	@Deprecated
 	public Reimbursement getByUsername(String username) {
 		//Empty. Reason - No use.
 		return null;
@@ -66,15 +50,16 @@ public class ReimbursementDao implements GenericDao<Reimbursement> {
 
 	@Override
 	public void insert(Reimbursement r) {
-		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().getCurrentSession()) {
+		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {
 			Transaction transaction = session.beginTransaction();
 			session.persist(r);
 			transaction.commit();
 		}
 	}
-	
+
+	@Deprecated
 	public void updateList(int[][] i, int resolver) {
-//		try(Connection c = ConnectionUtil.getInstance().getConnection()) {
+//		try(Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().getCurrentSession()) {
 //			String aSql = "SELECT acceptarray(?, ?)";
 //			String dSql = "SELECT denyarray(?, ?)";
 //
@@ -110,15 +95,12 @@ public class ReimbursementDao implements GenericDao<Reimbursement> {
 //				}
 //			}
 //			LOGGER.debug(totalCount + " reimbursement" + ((totalCount != 1) ? "s" : "") + " modified by user ID " + resolver + ".");
-//		} catch (SQLException e) {
-//			LOGGER.error("An attempt to accept/deny reimbursements by user ID " + resolver + " from the database failed.");
-//			e.printStackTrace();
 //		}
 	}
 	
 	@Override
 	public void delete(Reimbursement r) {
-		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().getCurrentSession()) {
+		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {
 			Transaction transaction = session.beginTransaction();
 			session.delete(r);
 			transaction.commit();

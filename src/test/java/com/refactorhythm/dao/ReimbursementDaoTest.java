@@ -1,38 +1,57 @@
 package com.refactorhythm.dao;
 
 import com.refactorhythm.model.Reimbursement;
+import com.refactorhythm.model.User;
+import com.refactorhythm.util.SessionUtility;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 import static org.mockito.Mockito.mock;
 
 public class ReimbursementDaoTest {
+    private Instant now = Instant.now();
+    private Instant in2Hours = now.plus(2, ChronoUnit.HOURS);
+    private Timestamp submitted = Timestamp.from(now);
+    private Timestamp resolved = Timestamp.from(in2Hours);
+    private User author = mock(User.class);
+    private User resolver = mock(User.class);
 
-    Reimbursement reimbursement = mock(Reimbursement.class);
+    Reimbursement reimbursement = new Reimbursement(
+            0,
+            100f,
+            submitted,
+            resolved,
+            "description of the reimbursement",
+            author.getUser_id(),
+            resolver.getUser_id(),
+            1,
+            1
+    );
+    ReimbursementDao rd = new ReimbursementDao();
 
     @Test
     @Order(1)
     public void testCreate(){
-
+        rd.insert(reimbursement);
     }
     @Test
     @Order(2)
-    public void testGet(){
-
+    public void testGetById(){
+        rd.getById(reimbursement.getId());
     }
     @Test
     @Order(3)
-    public void testUpdate(){
-
+    public void testGetByAll(){
+        rd.getList();
     }
     @Test
     @Order(4)
-    public void testGetById(){
-
-    }
-    @Test
-    @Order(5)
     public void testDelete(){
-
+        rd.delete(reimbursement);
     }
 }

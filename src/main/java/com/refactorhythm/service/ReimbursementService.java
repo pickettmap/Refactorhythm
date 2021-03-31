@@ -34,7 +34,8 @@ public class ReimbursementService {
 	public List<Reimbursement> getReimbursementsByUserID(int id) {
 		return rd.getByUserId(id);
 	}
-	
+
+	@Deprecated
 	public void updateReimbursements(int[][] i, int r) {
 		rd.updateList(i, r);
 	}
