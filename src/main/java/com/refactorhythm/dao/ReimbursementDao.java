@@ -31,10 +31,6 @@ import javax.persistence.criteria.CriteriaQuery;
  */
 public class ReimbursementDao implements GenericDao<Reimbursement> {
 	private static final Logger LOGGER = Logger.getLogger(ReimbursementDao.class);
-<<<<<<< HEAD
-=======
-
->>>>>>> 3d26138caf8bf7bf8092a1c8a712b98028bc06b6
 
 	@Override
 	public List<Reimbursement> getList() {
