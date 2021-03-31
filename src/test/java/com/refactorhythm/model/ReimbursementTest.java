@@ -12,8 +12,8 @@ import java.time.temporal.ChronoUnit;
 
 
 public class ReimbursementTest {
-    private Reimbursement r_withConstructor;
-    private Reimbursement r_withSetters;
+    private Reimbursement r_withConstructor = new Reimbursement();
+    private Reimbursement r_withSetters = new Reimbursement();
 
     private Instant now = Instant.now();
     private Instant in2Hours = now.plus(2, ChronoUnit.HOURS);
