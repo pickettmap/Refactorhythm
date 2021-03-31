@@ -12,7 +12,12 @@ import com.refactorhythm.util.SessionUtility;
 import org.apache.log4j.Logger;
 
 import com.refactorhythm.model.User;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 
 /*
  * Purpose of this Dao is to send/retrieve info about a reimbursement
@@ -23,28 +28,21 @@ public class UserDao implements GenericDao <User> {
 	
 	@Override
 	public List<User> getList() {
-		return null;
+
+		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().getCurrentSession()) {
+			CriteriaBuilder builder = session.getCriteriaBuilder();
+			CriteriaQuery query = builder.createQuery(User.class);
+			query.from(User.class);
+
+			return session.createQuery(query).getResultList();
+		}
 	}
 
 	@Override
 	public User getById(int id) {
-		User u = null;
-		
-		try(Connection c = ConnectionUtil.getInstance().getConnection()) {
-			String qSql = "SELECT * FROM ers_users WHERE ers_users_id = ?";
-			PreparedStatement ps = c.prepareStatement(qSql);
-			ps.setInt(1, id);
-			ResultSet rs = ps.executeQuery();
-			
-			if(rs.next())
-				u = objectConstructor(rs);
-			
-			LOGGER.debug("Information about user ID " + id + " was retrieved from the database.");
-		} catch (SQLException e) {
-			e.printStackTrace();
-			LOGGER.error("An attempt to get info about user ID " + id + " from the database failed.");
+		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().getCurrentSession()) {
+			return (User) session.get(User.class, id);
 		}
-		return u;
 	}
 	
 	@Override
@@ -55,36 +53,27 @@ public class UserDao implements GenericDao <User> {
 	
 	@Override
 	public User getByUsername(String username) {
-		User u = null;
-		
-		try(Connection c = ConnectionUtil.getInstance().getConnection()) {
-			String qSql = "SELECT * FROM ers_users WHERE ers_username = ?";
-			PreparedStatement ps = c.prepareStatement(qSql);
-			ps.setString(1, username.toLowerCase());
-			ResultSet rs = ps.executeQuery();
-			
-			if(rs.next()) {
-				//System.out.println("User object was created!");
-				u = objectConstructor(rs);
-			}
-			
-			LOGGER.debug("Information about username " + username + " was retrieved from the database.");
-		} catch (SQLException e) {
-			e.printStackTrace();
-			LOGGER.error("An attempt to get info about username " + username + " from the database failed.");
+		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().getCurrentSession()) {
+			return (User) session.get(User.class, username);
 		}
-		return u;
 	}
 
 	@Override
 	public void insert(User t) {
-		// TODO Auto-generated method stub
-		
+		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().getCurrentSession()) {
+			Transaction transaction = session.beginTransaction();
+			session.persist(t);
+			transaction.commit();
+		}
 	}
 
 	@Override
 	public void delete(User t) {
-		// TODO Auto-generated method stub
+		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().getCurrentSession()) {
+			Transaction transaction = session.beginTransaction();
+			session.delete(t);
+			transaction.commit();
+		}
 		
 	}
 }

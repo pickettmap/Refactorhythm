@@ -1,4 +1,4 @@
 package com.refactorhythm.dao;
 
-public class UserTest {
+public class UserDaoTest {
 }
