@@ -14,9 +14,7 @@ public class Reimbursement {
 	private Timestamp resolved;
 	private String description;
 
-	@OneToMany
 	private int author;
-	@OneToMany
 	private int resolver;
 	private int status_id;
 	private int type_id;
