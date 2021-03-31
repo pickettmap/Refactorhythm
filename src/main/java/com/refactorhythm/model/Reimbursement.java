@@ -1,14 +1,22 @@
 package com.refactorhythm.model;
 
+
+import javax.persistence.*;
 import java.sql.Timestamp;
 
+@Entity
+@Table(name="Reimbursements")
 public class Reimbursement {
+	@Id
 	private int id;
 	private float amount;
 	private Timestamp submitted;
 	private Timestamp resolved;
 	private String description;
+
+	@OneToMany
 	private int author;
+	@OneToMany
 	private int resolver;
 	private int status_id;
 	private int type_id;
