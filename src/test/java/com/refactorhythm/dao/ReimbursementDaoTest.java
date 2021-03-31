@@ -2,13 +2,13 @@ package com.refactorhythm.dao;
 
 import com.refactorhythm.model.Reimbursement;
 import com.refactorhythm.model.User;
-import com.refactorhythm.util.SessionUtility;
 import org.junit.jupiter.api.*;
 
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -37,20 +37,23 @@ public class ReimbursementDaoTest {
     @Order(1)
     public void testCreate(){
         rd.insert(reimbursement);
+        assertEquals("description of the reimbursement", rd.getById(0).getDescription());
     }
     @Test
     @Order(2)
     public void testGetById(){
-        rd.getById(reimbursement.getId());
+        assertEquals("description of the reimbursement", rd.getById(reimbursement.getId()).getDescription());
+
     }
     @Test
     @Order(3)
     public void testGetByAll(){
-        rd.getList();
+        assertNotEquals(0, rd.getList().size());
     }
     @Test
     @Order(4)
     public void testDelete(){
         rd.delete(reimbursement);
+        assertNull(rd.getById(0));
     }
 }
