@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.refactorhythm.model.Reimbursement;
 import com.refactorhythm.util.SessionUtility;
 import org.apache.log4j.Logger;
 
@@ -29,7 +30,7 @@ public class UserDao implements GenericDao <User> {
 	@Override
 	public List<User> getList() {
 
-		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().getCurrentSession()) {
+		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {
 			CriteriaBuilder builder = session.getCriteriaBuilder();
 			CriteriaQuery query = builder.createQuery(User.class);
 			query.from(User.class);
@@ -40,7 +41,7 @@ public class UserDao implements GenericDao <User> {
 
 	@Override
 	public User getById(int id) {
-		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().getCurrentSession()) {
+		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {
 			return (User) session.get(User.class, id);
 		}
 	}
@@ -53,14 +54,15 @@ public class UserDao implements GenericDao <User> {
 	
 	@Override
 	public User getByUsername(String username) {
-		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().getCurrentSession()) {
-			return (User) session.get(User.class, username);
+		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {
+			return session.createQuery("from User where username= :username", User.class)
+					.setParameter("username", username).uniqueResult();
 		}
 	}
 
 	@Override
 	public void insert(User t) {
-		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().getCurrentSession()) {
+		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {
 			Transaction transaction = session.beginTransaction();
 			session.persist(t);
 			transaction.commit();
@@ -69,7 +71,7 @@ public class UserDao implements GenericDao <User> {
 
 	@Override
 	public void delete(User t) {
-		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().getCurrentSession()) {
+		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {
 			Transaction transaction = session.beginTransaction();
 			session.delete(t);
 			transaction.commit();

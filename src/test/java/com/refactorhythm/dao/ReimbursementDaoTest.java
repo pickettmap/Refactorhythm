@@ -3,9 +3,7 @@ package com.refactorhythm.dao;
 import com.refactorhythm.model.Reimbursement;
 import com.refactorhythm.model.User;
 import com.refactorhythm.util.SessionUtility;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -13,6 +11,7 @@ import java.time.temporal.ChronoUnit;
 
 import static org.mockito.Mockito.mock;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ReimbursementDaoTest {
     private Instant now = Instant.now();
     private Instant in2Hours = now.plus(2, ChronoUnit.HOURS);
