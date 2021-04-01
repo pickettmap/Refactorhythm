@@ -42,7 +42,7 @@ public class UserDao implements GenericDao <User> {
 	@Override
 	public User getById(int id) {
 		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {
-			return (User) session.get(User.class, id);
+			return session.get(User.class, id);
 		}
 	}
 

@@ -1,6 +1,8 @@
 package com.refactorhythm.model;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import com.refactorhythm.service.UserService;
 import org.junit.jupiter.api.*;
 
 public class UserTest {
