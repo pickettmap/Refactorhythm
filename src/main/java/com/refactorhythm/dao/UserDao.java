@@ -45,7 +45,8 @@ public class UserDao implements GenericDao <User> {
 			return (User) session.get(User.class, id);
 		}
 	}
-	
+
+	@Deprecated
 	@Override
 	public List<User> getByUserId(int id) {
 		// TODO Auto-generated method stub
