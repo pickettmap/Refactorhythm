@@ -58,6 +58,7 @@ public class ReimbursementDao implements GenericDao<Reimbursement> {
 		}
 	}
 
+	@Override
 	public void update(Reimbursement r){
 		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {
 			Transaction transaction = session.beginTransaction();

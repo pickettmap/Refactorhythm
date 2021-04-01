@@ -71,6 +71,11 @@ public class UserDao implements GenericDao <User> {
 	}
 
 	@Override
+	public void update(User t) {
+
+	}
+
+	@Override
 	public void delete(User t) {
 		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {
 			Transaction transaction = session.beginTransaction();
