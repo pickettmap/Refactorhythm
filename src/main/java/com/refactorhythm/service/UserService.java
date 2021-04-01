@@ -55,7 +55,18 @@ public class UserService {
 			e.printStackTrace();
 		}
 	}
-	
+
+	public void updateUser(String json){
+		try {
+			User u = gson.fromJson(json, User.class);
+			LOGGER.debug("JSON from the client was successfully parsed.");
+			ud.update(u);
+		} catch (Exception e) {
+			LOGGER.error("Something occurred during JSON parsing for update reimbursement. Is the JSON malformed?");
+			e.printStackTrace();
+		}
+	}
+
 	public List<User> fetchAllUsers() {
 		return ud.getList();
 	}
@@ -73,7 +84,12 @@ public class UserService {
 		}
 		return null;
 	}
-	
+
+	public void deleteUser(int id) {
+		User u = ud.getById(id);
+		ud.delete(u);
+	}
+
 	public User getUserByLogin(String user, String pass) {
 		User u = ud.getByUsername(user);
 		

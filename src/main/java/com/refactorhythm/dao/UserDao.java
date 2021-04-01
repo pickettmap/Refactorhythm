@@ -62,24 +62,28 @@ public class UserDao implements GenericDao <User> {
 	}
 
 	@Override
-	public void insert(User t) {
+	public void insert(User u) {
 		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {
 			Transaction transaction = session.beginTransaction();
-			session.persist(t);
+			session.persist(u);
 			transaction.commit();
 		}
 	}
 
 	@Override
-	public void update(User t) {
-
+	public void update(User u) {
+		try(Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {
+			Transaction transaction = session.beginTransaction();
+			session.merge(u);
+			transaction.commit();
+		}
 	}
 
 	@Override
-	public void delete(User t) {
+	public void delete(User u) {
 		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {
 			Transaction transaction = session.beginTransaction();
-			session.delete(t);
+			session.delete(u);
 			transaction.commit();
 		}
 		

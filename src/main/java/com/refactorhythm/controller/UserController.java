@@ -12,8 +12,9 @@ import java.io.IOException;
 public class UserController extends AbstractController{
 
     private UserService userService = new UserService();
-    Gson gson = new Gson();
 
+
+    //TODO: Set statuses and create responses
     @Override
     public void get(HttpServletRequest req, HttpServletResponse res) {
         String id = req.getParameter("user_id");
@@ -53,10 +54,35 @@ public class UserController extends AbstractController{
     @Override
     public void put(HttpServletRequest req, HttpServletResponse res) {
 
+        StringBuilder sb = new StringBuilder();
+        try (BufferedReader reader = req.getReader()){
+            String line;
+            while((line = reader.readLine()) != null) sb.append(line);
+            userService.updateUser(sb.toString());
+            res.setStatus(200);
+            res.getWriter().println("User information has been updated");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
     public void delete(HttpServletRequest req, HttpServletResponse res) {
+
+        String id = req.getParameter("user_id");
+
+        try {
+            if (id == null) {
+                res.setStatus(400);
+                res.getWriter().println("User with id: " + id + " not found");
+            } else {
+                userService.deleteUser(Integer.parseInt(id));
+                res.getWriter().println("User with id: " + id + "has been successfully deleted");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 }
