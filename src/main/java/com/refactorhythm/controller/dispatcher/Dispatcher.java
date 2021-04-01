@@ -39,7 +39,7 @@ public class Dispatcher {
                     break;
                 case PUT: userController.put(req, res);
                     break;
-                case DELETE: userController.post(req, res);
+                case DELETE: userController.delete(req, res);
                     break;
             }
                 break;
