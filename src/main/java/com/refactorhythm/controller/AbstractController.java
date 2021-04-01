@@ -1,7 +1,6 @@
 package com.refactorhythm.controller;
 
 import com.google.gson.Gson;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 

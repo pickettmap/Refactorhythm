@@ -2,6 +2,7 @@ package com.refactorhythm.service;
 
 import java.util.List;
 
+import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,6 +11,7 @@ import com.refactorhythm.model.Reimbursement;
 
 public class ReimbursementService {
 	private ReimbursementDao rd;
+	private Gson gson = new Gson();
 	private static final Logger LOGGER = Logger.getLogger(ReimbursementService.class);
 	
 	public ReimbursementService() {
@@ -18,7 +20,7 @@ public class ReimbursementService {
 	
 	public void createReimbursement(String json) {
 		try {
-			Reimbursement r = new ObjectMapper().readValue(json, Reimbursement.class);
+			Reimbursement r = gson.fromJson(json, Reimbursement.class);
 			LOGGER.debug("JSON from the client was successfully parsed.");
 			rd.insert(r);
 		} catch (Exception e) {
@@ -35,8 +37,19 @@ public class ReimbursementService {
 		return rd.getByUserId(id);
 	}
 
-	@Deprecated
-	public void updateReimbursements(int[][] i, int r) {
-		rd.updateList(i, r);
+	public void updateReimbursement(String json){
+		try {
+			Reimbursement r = gson.fromJson(json, Reimbursement.class);
+			LOGGER.debug("JSON from the client was successfully parsed.");
+			rd.update(r);
+		} catch (Exception e) {
+			LOGGER.error("Something occurred during JSON parsing for update reimbursement. Is the JSON malformed?");
+			e.printStackTrace();
+		}
 	}
+
+	public void deleteReimbursementById(int id){
+		rd.delete(rd.getById(id));
+	}
+
 }
