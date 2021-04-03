@@ -23,14 +23,18 @@ public class UserController extends AbstractController{
         try {
             if(password!= null && username != null) {
                 res.getWriter().println(userService.getUserByLogin(username, password));
+                res.setStatus(200);
             } else if (username != null) {
                 res.getWriter().println(userService.getUserByUsername(username));
+                res.setStatus(200);
             } else if(id != null) {
                 Integer intId = Integer.parseInt(id);
                 String js = gson.toJson(userService.getUserById(intId));
                 res.getWriter().println(js);
+                res.setStatus(200);
             } else {
                 res.getWriter().println(userService.fetchAllUsers());
+                res.setStatus(200);
             }
 
         } catch (IOException e) {
