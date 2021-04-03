@@ -18,7 +18,7 @@ public class ReimbursementService {
 		rd = new ReimbursementDao();
 	}
 	
-	public void createReimbursement(String json) {
+	public void createReimbursement(String json) throws Exception{
 		try {
 			Reimbursement r = gson.fromJson(json, Reimbursement.class);
 			LOGGER.debug("JSON from the client was successfully parsed.");
@@ -26,6 +26,7 @@ public class ReimbursementService {
 		} catch (Exception e) {
 			LOGGER.error("Something occurred during JSON parsing for a new reimbursement. Is the JSON malformed?");
 			e.printStackTrace();
+			throw e;
 		}
 	}
 	
@@ -37,7 +38,7 @@ public class ReimbursementService {
 		return rd.getByUserId(id);
 	}
 
-	public void updateReimbursement(String json){
+	public void updateReimbursement(String json) throws Exception{
 		try {
 			Reimbursement r = gson.fromJson(json, Reimbursement.class);
 			LOGGER.debug("JSON from the client was successfully parsed.");
@@ -45,11 +46,15 @@ public class ReimbursementService {
 		} catch (Exception e) {
 			LOGGER.error("Something occurred during JSON parsing for update reimbursement. Is the JSON malformed?");
 			e.printStackTrace();
+			throw e;
 		}
 	}
 
-	public void deleteReimbursementById(int id){
-		rd.delete(rd.getById(id));
+	public void deleteReimbursementById(int id) throws Exception {
+		Reimbursement r = rd.getById(id);
+		if(r != null)
+			rd.delete(r);
+		else throw new Exception("id not found");
 	}
 
 }

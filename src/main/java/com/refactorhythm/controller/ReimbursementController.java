@@ -6,22 +6,42 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.Objects;
 
 public class ReimbursementController extends AbstractController {
 
     ReimbursementService reimbursementService = new ReimbursementService();
+    String methodNotFoundError = "{\"error\":\"Method not found to handle your request. Check your parameters.\"}";
+    String idNotFoundError = "{\"error\":\"Id not found.\"}";
+    String success = "{\"message\":\"success.\"}";
 
     @Override
     public void get(HttpServletRequest req, HttpServletResponse res) {
-        String id = req.getParameter("user-id");
+
+        Enumeration<String> params = req.getParameterNames();
+        res.setContentType("application/json");
         try{
-            if(id == null){     //fetchAllReimbursements()
+            if(params.hasMoreElements()){ // they are sending parameters
+                String id = req.getParameter("user-id");
+                if(id != null && !id.equals("")){
+                    res.setStatus(200);
+                    res.getWriter().println(gson.toJson(reimbursementService.getReimbursementsByUserID(Integer.parseInt(id))));
+                } else{
+                    res.setStatus(400);
+                    res.getWriter().println(methodNotFoundError);
+                }
+            } else { // they are sending a fetchAll
+                res.setStatus(200);
                 res.getWriter().println(gson.toJson(reimbursementService.fetchAllReimbursements()));
-            } else{             // getReimbursementsByUserId(int id)
-                res.getWriter().println(gson.toJson(reimbursementService.getReimbursementsByUserID(Integer.parseInt(id))));
             }
-        }catch(IOException e){
-            e.printStackTrace();
+        } catch (IOException|NumberFormatException e) {
+            res.setStatus(400);
+            try {
+                res.getWriter().println(methodNotFoundError);
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
         }
     }
 
@@ -36,8 +56,14 @@ public class ReimbursementController extends AbstractController {
             reimbursementService.createReimbursement(sb.toString());
             //TODO: set different status code if it errors out
             res.setStatus(201);
-        } catch(IOException e){
-            e.printStackTrace();
+            res.getWriter().println(success);
+        } catch(Exception e){
+            res.setStatus(400);
+            try {
+                res.getWriter().println(methodNotFoundError);
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
         }
 
     }
@@ -51,8 +77,14 @@ public class ReimbursementController extends AbstractController {
             reimbursementService.updateReimbursement(sb.toString());
             //TODO: set different status code if it errors out
             res.setStatus(201);
-        } catch(IOException e){
-            e.printStackTrace();
+            res.getWriter().println(success);
+        } catch(Exception e){
+            res.setStatus(400);
+            try {
+                res.getWriter().println(methodNotFoundError);
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
         }
     }
     @Override
@@ -61,12 +93,19 @@ public class ReimbursementController extends AbstractController {
         try{
             if(id == null){     //fetchAllReimbursements()
                 res.setStatus(400);
-                res.getWriter().println("Id not found");
+                res.getWriter().println(methodNotFoundError);
             } else{             // getReimbursementsByUserId(int id)
                 reimbursementService.deleteReimbursementById(Integer.parseInt(id));
+                res.setStatus(200);
+                res.getWriter().println(success);
             }
-        }catch(IOException e){
-            e.printStackTrace();
+        }catch(Exception e){
+            res.setStatus(400);
+            try {
+                res.getWriter().println(idNotFoundError);
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
         }
     }
 }
