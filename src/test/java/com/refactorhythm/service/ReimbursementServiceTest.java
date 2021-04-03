@@ -15,7 +15,7 @@ public class ReimbursementServiceTest {
             "    \"resolver\": 0,\n" +
             "    \"status_id\": 1,\n" +
             "    \"type_id\": 1\n" +
-            "  }");
+            "  }";
     @Test
     @Order(1)
     public void createReimbursementTest() throws Exception {
