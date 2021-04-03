@@ -8,5 +8,6 @@ public interface GenericDao <T> {
 	List<T> getByUserId(int id);
 	T getByUsername(String username);
 	void insert(T t);
+	void update(T t);
 	void delete(T t);
 }

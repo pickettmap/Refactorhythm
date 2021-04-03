@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import com.refactorhythm.model.Reimbursement;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.postgresql.util.PSQLException;
 
 
 /*
@@ -37,7 +38,7 @@ public class ReimbursementDao implements GenericDao<Reimbursement> {
 	@Override
 	public List<Reimbursement> getByUserId(int id) {
 		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {
-			return session.createQuery("from Reimbursement", Reimbursement.class)
+			return session.createQuery("from Reimbursement where author= :author", Reimbursement.class)
 			.setParameter("author", id).getResultList();
 		}
 	}
@@ -57,47 +58,15 @@ public class ReimbursementDao implements GenericDao<Reimbursement> {
 		}
 	}
 
-	@Deprecated
-	public void updateList(int[][] i, int resolver) {
-//		try(Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().getCurrentSession()) {
-//			String aSql = "SELECT acceptarray(?, ?)";
-//			String dSql = "SELECT denyarray(?, ?)";
-//
-//			//Convert both of our int arrays to an Integer object
-//			Integer[] a = Arrays.stream(i[0]).boxed().toArray(Integer[]::new);
-//			Integer[] d = Arrays.stream(i[1]).boxed().toArray(Integer[]::new);
-//
-//			//Convert both of our Integer arrays into something useful for SQL.
-//			Array aArray = c.createArrayOf("INTEGER", a);
-//			Array dArray = c.createArrayOf("INTEGER", d);
-//
-//			//Perform our SQL calls
-//			CallableStatement cs = c.prepareCall(aSql);
-//			cs.setArray(1, aArray);
-//			cs.setInt(2, resolver);
-//			cs.execute();
-//			cs.closeOnCompletion();
-//
-//			cs = c.prepareCall(dSql);
-//			cs.setArray(1, dArray);
-//			cs.setInt(2, resolver);
-//			cs.execute();
-//			cs.closeOnCompletion();
-//
-//			//This section is just for the sake of logging.
-//			int totalCount = 0;
-//			for(int co = 0; co < a.length; co++) {
-//				if (a[co] != -1) {
-//					totalCount++;
-//				}
-//				if (d[co] != -1) {
-//					totalCount++;
-//				}
-//			}
-//			LOGGER.debug(totalCount + " reimbursement" + ((totalCount != 1) ? "s" : "") + " modified by user ID " + resolver + ".");
-//		}
+	@Override
+	public void update(Reimbursement r){
+		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {
+			Transaction transaction = session.beginTransaction();
+			session.merge(r);
+			transaction.commit();
+		}
 	}
-	
+
 	@Override
 	public void delete(Reimbursement r) {
 		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {

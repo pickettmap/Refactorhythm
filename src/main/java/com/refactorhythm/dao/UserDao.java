@@ -42,10 +42,11 @@ public class UserDao implements GenericDao <User> {
 	@Override
 	public User getById(int id) {
 		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {
-			return (User) session.get(User.class, id);
+			return session.get(User.class, id);
 		}
 	}
-	
+
+	@Deprecated
 	@Override
 	public List<User> getByUserId(int id) {
 		// TODO Auto-generated method stub
@@ -61,19 +62,28 @@ public class UserDao implements GenericDao <User> {
 	}
 
 	@Override
-	public void insert(User t) {
+	public void insert(User u) {
 		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {
 			Transaction transaction = session.beginTransaction();
-			session.persist(t);
+			session.persist(u);
 			transaction.commit();
 		}
 	}
 
 	@Override
-	public void delete(User t) {
+	public void update(User u) {
+		try(Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {
+			Transaction transaction = session.beginTransaction();
+			session.merge(u);
+			transaction.commit();
+		}
+	}
+
+	@Override
+	public void delete(User u) {
 		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {
 			Transaction transaction = session.beginTransaction();
-			session.delete(t);
+			session.delete(u);
 			transaction.commit();
 		}
 		
