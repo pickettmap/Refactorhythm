@@ -14,13 +14,19 @@ import org.hibernate.Transaction;
 import org.postgresql.util.PSQLException;
 
 
-/*
- * Purpose of this Dao is to send/retrieve info about a reimbursement
- * to/from the database. It then returns the composed Reimbursement Object.
+/**
+ * This handles all Database Access for Reimbursements.
+ * @author Brandon Pinkerton
+ * @version 1.0
+ *
  */
 public class ReimbursementDao implements GenericDao<Reimbursement> {
 	private static final Logger LOGGER = Logger.getLogger(ReimbursementDao.class);
 
+	/**
+	 * This gets a list of all reimbursements in the Reimbursements table.
+	 * @return Returns a List of Reimbursement objects.
+	 */
 	@Override
 	public List<Reimbursement> getList() {
 		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {
@@ -28,14 +34,23 @@ public class ReimbursementDao implements GenericDao<Reimbursement> {
 		}
 	}
 
+	/**
+	 * This gets a single reimbursement by primary key, reimbursementId.
+	 * @param id the reimbursementId.
+	 * @return Returns a Reimbursement object.
+	 */
 	@Override
 	public Reimbursement getById(int id) {
 		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {
 			return session.get(Reimbursement.class, id);
 		}
 	}
-	
-	@Override
+
+	/**
+	 * This gets a list of reimbursements for a specific user.
+	 * @param id the author.
+	 * @return Returns a List of Reimbursement objects.
+	 */
 	public List<Reimbursement> getByUserId(int id) {
 		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {
 			return session.createQuery("from Reimbursement where author= :author", Reimbursement.class)
@@ -43,12 +58,10 @@ public class ReimbursementDao implements GenericDao<Reimbursement> {
 		}
 	}
 
-	@Deprecated
-	public Reimbursement getByUsername(String username) {
-		//Empty. Reason - No use.
-		return null;
-	}
-
+	/**
+	 * This inserts a reimbursement in the Reimbursements table.
+	 * @param r the Reimbursement object to be inserted.
+	 */
 	@Override
 	public void insert(Reimbursement r) {
 		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {
@@ -58,6 +71,10 @@ public class ReimbursementDao implements GenericDao<Reimbursement> {
 		}
 	}
 
+	/**
+	 * This updates a reimbursement in the Reimbursements table.
+	 * @param r the Reimbursement object to be updated.
+	 */
 	@Override
 	public void update(Reimbursement r){
 		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {
@@ -67,6 +84,10 @@ public class ReimbursementDao implements GenericDao<Reimbursement> {
 		}
 	}
 
+	/**
+	 * This deletes a reimbursement in Reimbursements table.
+	 * @param r the Reimbursement object to be deleted.
+	 */
 	@Override
 	public void delete(Reimbursement r) {
 		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {

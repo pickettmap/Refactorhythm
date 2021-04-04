@@ -46,14 +46,6 @@ public class UserDao implements GenericDao <User> {
 		}
 	}
 
-	@Deprecated
-	@Override
-	public List<User> getByUserId(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
 	public User getByUsername(String username) {
 		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {
 			return session.createQuery("from User where username= :username", User.class)
