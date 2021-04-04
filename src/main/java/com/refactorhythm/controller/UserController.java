@@ -15,7 +15,13 @@ public class UserController extends AbstractController{
     private UserService userService = new UserService();
 
 
-    //TODO: Set statuses and create responses
+    /**
+     * Retrieves corresponding user(s) based on request parameters
+     * @param req text  Can request a specific user based on user_id, username, or username & password
+     *                  No parameters will request all users
+     * @param res text  User data written to response as json. Status code set to 200 for
+     *                  success or 400 for failure.
+     */
     @Override
     public void get(HttpServletRequest req, HttpServletResponse res) {
         Enumeration<String > params = req.getParameterNames();
@@ -50,6 +56,11 @@ public class UserController extends AbstractController{
         }
     }
 
+    /**
+     * Adds user to database from json
+     * @param req text  Json text representing new user data
+     * @param res text  Sets status code to 201 if user was successfully added, 400 otherwise
+     */
     @Override
     public void post(HttpServletRequest req, HttpServletResponse res) {
 
@@ -65,6 +76,12 @@ public class UserController extends AbstractController{
         }
     }
 
+    /**
+     * Updates user in database from json
+     * @param req text  Json text representing user data. user_id should correspond to an
+     *                  existing user. User is updated based on parameter data
+     * @param res text  Sets status code to 201 if user was successfully updated, 400 otherwise
+     */
     @Override
     public void put(HttpServletRequest req, HttpServletResponse res) {
 
@@ -74,7 +91,6 @@ public class UserController extends AbstractController{
             while((line = reader.readLine()) != null) sb.append(line);
             userService.updateUser(sb.toString());
             res.setStatus(201);
-            res.getWriter().println("User information has been updated");
         } catch (IOException e) {
             res.setStatus(400);
             e.printStackTrace();
@@ -82,6 +98,12 @@ public class UserController extends AbstractController{
 
     }
 
+    /**
+     * Deletes an existing user from database
+     * @param req text  This request needs a user_id parameter to specify which user should
+     *                  be deleted
+     * @param res text  Sets status code to 200 if user was successfully found and deleted, 400 otherwise
+     */
     @Override
     public void delete(HttpServletRequest req, HttpServletResponse res) {
 
@@ -90,14 +112,11 @@ public class UserController extends AbstractController{
         try {
             if (id == null) {
                 res.setStatus(400);
-                res.getWriter().println("User with id: " + id + " not found");
             } else {
                 userService.deleteUser(Integer.parseInt(id));
-                res.getWriter().println("User with id: " + id + "has been successfully deleted");
                 res.setStatus(200);
             }
-        } catch (IOException e) {
-            res.setStatus(400);
+        } catch (NumberFormatException e) {
             e.printStackTrace();
         }
 
