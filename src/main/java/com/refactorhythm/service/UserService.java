@@ -68,11 +68,25 @@ public class UserService {
 	}
 
 	public List<User> fetchAllUsers() {
-		return ud.getList();
+		List <User> noPasswordUsers = null;
+
+		for (User u : ud.getList()) {
+			u.setPassword("");
+			noPasswordUsers.add(u);
+		}
+
+		return null;
 	}
 	
 	public User getUserById(int id) {
-		return ud.getById(id);
+		User u = ud.getById(id);
+
+		if(u != null) {
+			u.setPassword("");
+			return u;
+		}
+
+		return null;
 	}
 	
 	public User getUserByUsername(String username) {
