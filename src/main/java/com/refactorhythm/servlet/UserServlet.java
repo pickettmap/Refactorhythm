@@ -13,23 +13,51 @@ import java.io.IOException;
 @WebServlet(urlPatterns = "/user")
 public class UserServlet extends AbstractServlet {
 
+    /**
+     * This handles all get requests for User.
+     * @param req the user request.
+     * @param res the response to be sent to the user.
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        frontController.dispatchRequest(Endpoint.USER, RequestMethod.GET, req, resp);
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        frontController.dispatchRequest(Endpoint.USER, RequestMethod.GET, req, res);
     }
 
+    /**
+     * This handles all post requests for User.
+     * @param req the user request.
+     * @param res the response to be sent to the user.
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        frontController.dispatchRequest(Endpoint.USER, RequestMethod.POST, req, resp);
+    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        frontController.dispatchRequest(Endpoint.USER, RequestMethod.POST, req, res);
     }
 
+    /**
+     * This handles all put requests for User.
+     * @param req the user request.
+     * @param res the response to be sent to the user.
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        frontController.dispatchRequest(Endpoint.USER, RequestMethod.PUT, req, resp);
+    protected void doPut(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        frontController.dispatchRequest(Endpoint.USER, RequestMethod.PUT, req, res);
     }
 
+    /**
+     * This handles all delete requests for User.
+     * @param req the user request.
+     * @param res the response to be sent to the user.
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        frontController.dispatchRequest(Endpoint.USER, RequestMethod.DELETE, req, resp);
+    protected void doDelete(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        frontController.dispatchRequest(Endpoint.USER, RequestMethod.DELETE, req, res);
     }
 }

@@ -20,6 +20,12 @@ public class UserService {
 		ud = new UserDao();
 	}
 
+	/**
+	 * Calls the DAO to create a user object based on json input.
+	 * Converts json input to User object and hashes the new user's password before saving it to the database.
+	 * @param json the JSON string to be converted by gson to a user object
+	 * @throws Exception if json cannot be converted properly.
+	 */
 	public void createUser(String json) {
 		try {
 			User u = gson.fromJson(json, User.class);
@@ -56,6 +62,12 @@ public class UserService {
 		}
 	}
 
+	/**
+	 * Calls the DAO to update existing user object based on json input.
+	 * Converts json input to user object and updates corresponding user with any new data.
+	 * @param json the JSON string to be converted by gson to a user object
+	 * @throws Exception if json cannot be converted properly.
+	 */
 	public void updateUser(String json){
 		try {
 			User u = gson.fromJson(json, User.class);
@@ -67,6 +79,10 @@ public class UserService {
 		}
 	}
 
+	/**
+	 * Calls the DAO and returns a list of all users
+	 * @return Returns a list of user objects
+	 */
 	public List<User> fetchAllUsers() {
 		List <User> noPasswordUsers = null;
 
@@ -77,7 +93,12 @@ public class UserService {
 
 		return null;
 	}
-	
+
+	/**
+	 * Calls the DAO and returns the corresponding user from the database based on user_id
+	 * @param id the user_id of the user to be retrieved
+	 * @return Returns the corresponding user from the database with matching user_id
+	 */
 	public User getUserById(int id) {
 		User u = ud.getById(id);
 
@@ -88,7 +109,12 @@ public class UserService {
 
 		return null;
 	}
-	
+
+	/**
+	 * Calls the DAO and returns the corresponding user from the database based on username
+	 * @param username the username of the user to be retrieved
+	 * @return Returns the corresponding user from the database with matching username
+	 */
 	public User getUserByUsername(String username) {
 		User u = ud.getByUsername(username);
 		if (u != null) {
@@ -99,11 +125,23 @@ public class UserService {
 		return null;
 	}
 
+	/**
+	 * Calls the DAO and deletes the corresponding user from the database based on user_id
+	 * @param id the user_id of the user to be deleted
+	 */
 	public void deleteUser(int id) {
 		User u = ud.getById(id);
 		ud.delete(u);
 	}
 
+	/**
+	 * Calls the DAO and returns the corresponding user from the database based on username and password
+	 * This method salts and hashes the password and compares it to the hashed password
+	 * stored in the database
+	 * @param user the username of the user to be retrieved
+	 * @param pass the password of the user to be retrieved
+	 * @return Returns the corresponding user from the database with correct username and password
+	 */
 	public User getUserByLogin(String user, String pass) {
 		User u = ud.getByUsername(user);
 		

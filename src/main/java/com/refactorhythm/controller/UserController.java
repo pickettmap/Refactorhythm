@@ -60,6 +60,7 @@ public class UserController extends AbstractController{
      * Adds user to database from json
      * @param req text  Json text representing new user data
      * @param res text  Sets status code to 201 if user was successfully added, 400 otherwise
+     * @throws IOException if request cannot be properly read
      */
     @Override
     public void post(HttpServletRequest req, HttpServletResponse res) {
@@ -81,6 +82,7 @@ public class UserController extends AbstractController{
      * @param req text  Json text representing user data. user_id should correspond to an
      *                  existing user. User is updated based on parameter data
      * @param res text  Sets status code to 201 if user was successfully updated, 400 otherwise
+     * @throws IOException if request cannot be properly read
      */
     @Override
     public void put(HttpServletRequest req, HttpServletResponse res) {
@@ -103,6 +105,7 @@ public class UserController extends AbstractController{
      * @param req text  This request needs a user_id parameter to specify which user should
      *                  be deleted
      * @param res text  Sets status code to 200 if user was successfully found and deleted, 400 otherwise
+     * @throws NumberFormatException if user_id cannot be converted to an Integer
      */
     @Override
     public void delete(HttpServletRequest req, HttpServletResponse res) {
