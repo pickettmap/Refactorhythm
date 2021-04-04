@@ -20,13 +20,19 @@ import org.hibernate.Transaction;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 
-/*
- * Purpose of this Dao is to send/retrieve info about a reimbursement
- * to/from the database. It then returns the composed Reimbursement Object.
+/**
+ * This handles all Database Access for Reimbursements.
+ * @author Mikayla Pickett
+ * @version 1.0
+ *
  */
 public class UserDao implements GenericDao <User> {
 	private static final Logger LOGGER = Logger.getLogger(UserDao.class);
-	
+
+	/**
+	 * This returns a list of all the users in the users table
+	 * @return Returns a list of user objects
+	 */
 	@Override
 	public List<User> getList() {
 
@@ -39,6 +45,11 @@ public class UserDao implements GenericDao <User> {
 		}
 	}
 
+	/**
+	 * This returns a single user by primary key user_id
+	 * @param id
+	 * @return Returns user object
+	 */
 	@Override
 	public User getById(int id) {
 		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {
@@ -46,6 +57,11 @@ public class UserDao implements GenericDao <User> {
 		}
 	}
 
+	/**
+	 * This returns a single user with matching username
+	 * @param username
+	 * @return Returns user object
+	 */
 	public User getByUsername(String username) {
 		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {
 			return session.createQuery("from User where username= :username", User.class)
@@ -53,6 +69,10 @@ public class UserDao implements GenericDao <User> {
 		}
 	}
 
+	/**
+	 * Inserts a user into the database
+	 * @param u user object to be saved
+	 */
 	@Override
 	public void insert(User u) {
 		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {
@@ -62,6 +82,10 @@ public class UserDao implements GenericDao <User> {
 		}
 	}
 
+	/**
+	 * Updates corresponding user in the database with new user information
+	 * @param u user object to be updated
+	 */
 	@Override
 	public void update(User u) {
 		try(Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {
@@ -71,6 +95,10 @@ public class UserDao implements GenericDao <User> {
 		}
 	}
 
+	/**
+	 * Deletes corresponing user from the database
+	 * @param u user objectg to be deleted from the database
+	 */
 	@Override
 	public void delete(User u) {
 		try (Session session = SessionUtility.INSTANCE.getSessionFactoryInstance().openSession()) {
