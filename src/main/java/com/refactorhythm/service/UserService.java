@@ -3,6 +3,7 @@ package com.refactorhythm.service;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -84,7 +85,7 @@ public class UserService {
 	 * @return Returns a list of user objects
 	 */
 	public List<User> fetchAllUsers() {
-		List <User> noPasswordUsers = null;
+		List <User> noPasswordUsers = new ArrayList();
 
 		for (User u : ud.getList()) {
 			u.setPassword("");
