@@ -9,6 +9,11 @@ import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Objects;
 
+/**
+ * This handles all of the Request and Response parsing for Reimbursements.
+ * @author Brandon Pinkerton
+ * @version 1.0
+ */
 public class ReimbursementController extends AbstractController {
 
     ReimbursementService reimbursementService = new ReimbursementService();
@@ -16,6 +21,11 @@ public class ReimbursementController extends AbstractController {
     String idNotFoundError = "{\"error\":\"Id not found.\"}";
     String success = "{\"message\":\"success.\"}";
 
+    /**
+     * This will get all reimbursements if a user-id is not present, else it will get all for that user.
+     * @param req the user request from the Reimbursement endpoint.
+     * @param res the response to be sent to the user.
+     */
     @Override
     public void get(HttpServletRequest req, HttpServletResponse res) {
 
@@ -45,6 +55,11 @@ public class ReimbursementController extends AbstractController {
         }
     }
 
+    /**
+     * This will create a new reimbursement from the information in the request.
+     * @param req the user request from the Reimbursement endpoint.
+     * @param res the response to be sent to the user.
+     */
     @Override
     public void post(HttpServletRequest req, HttpServletResponse res) {
         //createReimbursement(String json)
@@ -68,6 +83,11 @@ public class ReimbursementController extends AbstractController {
 
     }
 
+    /**
+     * This will update a reimbursement from the information in the request.
+     * @param req the user request from the Reimbursement endpoint.
+     * @param res the response to be sent to the user.
+     */
     @Override
     public void put(HttpServletRequest req, HttpServletResponse res) {
         StringBuilder sb = new StringBuilder();
@@ -87,6 +107,12 @@ public class ReimbursementController extends AbstractController {
             }
         }
     }
+
+    /**
+     * This will delete a reimbursement from the information in the request.
+     * @param req the user request from the Reimbursement endpoint.
+     * @param res the response to be sent to the user.
+     */
     @Override
     public void delete(HttpServletRequest req, HttpServletResponse res) {
         String id = req.getParameter("id");

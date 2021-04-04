@@ -18,7 +18,6 @@ import org.postgresql.util.PSQLException;
  * This handles all Database Access for Reimbursements.
  * @author Brandon Pinkerton
  * @version 1.0
- *
  */
 public class ReimbursementDao implements GenericDao<Reimbursement> {
 	private static final Logger LOGGER = Logger.getLogger(ReimbursementDao.class);

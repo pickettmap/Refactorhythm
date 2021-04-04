@@ -6,6 +6,9 @@ import com.google.gson.GsonBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * This is a set of abstractions for the controllers in order to ensure they all have some base functionality.
+ */
 public abstract class AbstractController {
     Gson gson;
     GsonBuilder builder;

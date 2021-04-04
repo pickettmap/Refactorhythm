@@ -10,12 +10,20 @@ import org.hibernate.service.ServiceRegistry;
 
 import java.util.Properties;
 
-
+/**
+ * This is a singleton session factory. The session is configured for an in memory database.
+ * @author Brandon Pinkerton
+ * @version 1.0
+ */
 public enum H2SessionUtility {
     INSTANCE;
 
     private SessionFactory instance;
 
+    /**
+     * This gets a session factory instance or creates one.
+     * @return Returns the instance.
+     */
     public SessionFactory getSessionFactoryInstance(){
         if(instance == null){
             try{
