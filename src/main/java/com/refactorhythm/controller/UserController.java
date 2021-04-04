@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Enumeration;
 
 public class UserController extends AbstractController{
 
@@ -17,27 +18,34 @@ public class UserController extends AbstractController{
     //TODO: Set statuses and create responses
     @Override
     public void get(HttpServletRequest req, HttpServletResponse res) {
+        Enumeration<String > params = req.getParameterNames();
         String id = req.getParameter("user_id");
         String username = req.getParameter("username");
         String password = req.getParameter("password");
         try {
-            if(password!= null && username != null) {
-                res.getWriter().println(userService.getUserByLogin(username, password));
-                res.setStatus(200);
-            } else if (username != null) {
-                res.getWriter().println(userService.getUserByUsername(username));
-                res.setStatus(200);
-            } else if(id != null) {
-                Integer intId = Integer.parseInt(id);
-                String js = gson.toJson(userService.getUserById(intId));
-                res.getWriter().println(js);
-                res.setStatus(200);
-            } else {
+            if(params.hasMoreElements()) {
+                if(password!= null && username != null) {
+                    res.getWriter().println(userService.getUserByLogin(username, password));
+                    res.setStatus(200);
+                } else if (username != null) {
+                    res.getWriter().println(userService.getUserByUsername(username));
+                    res.setStatus(200);
+                } else if(id != null) {
+                    Integer intId = Integer.parseInt(id);
+                    String js = gson.toJson(userService.getUserById(intId));
+                    res.getWriter().println(js);
+                    res.setStatus(200);
+                } else {
+                    res.setStatus(400);
+                }
+            }
+             else {
                 res.getWriter().println(userService.fetchAllUsers());
                 res.setStatus(200);
             }
 
         } catch (IOException e) {
+            res.setStatus(400);
             e.printStackTrace();
         }
     }
@@ -50,7 +58,9 @@ public class UserController extends AbstractController{
             String line;
             while((line = reader.readLine()) != null) sb.append(line);
             userService.createUser(sb.toString());
+            res.setStatus(201);
         } catch (IOException e) {
+            res.setStatus(400);
             e.printStackTrace();
         }
     }
@@ -63,9 +73,10 @@ public class UserController extends AbstractController{
             String line;
             while((line = reader.readLine()) != null) sb.append(line);
             userService.updateUser(sb.toString());
-            res.setStatus(200);
+            res.setStatus(201);
             res.getWriter().println("User information has been updated");
         } catch (IOException e) {
+            res.setStatus(400);
             e.printStackTrace();
         }
 
@@ -83,8 +94,10 @@ public class UserController extends AbstractController{
             } else {
                 userService.deleteUser(Integer.parseInt(id));
                 res.getWriter().println("User with id: " + id + "has been successfully deleted");
+                res.setStatus(200);
             }
         } catch (IOException e) {
+            res.setStatus(400);
             e.printStackTrace();
         }
 
