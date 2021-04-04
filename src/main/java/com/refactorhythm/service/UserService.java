@@ -92,7 +92,7 @@ public class UserService {
 			noPasswordUsers.add(u);
 		}
 
-		return null;
+		return noPasswordUsers;
 	}
 
 	/**
