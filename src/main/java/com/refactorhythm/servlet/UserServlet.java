@@ -10,6 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+
+/**
+ * This handles receiving requests to the User endpoint.
+ * @author Mikayla Pickett
+ * @version 1.0
+ */
 @WebServlet(urlPatterns = "/user")
 public class UserServlet extends AbstractServlet {
 

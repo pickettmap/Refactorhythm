@@ -10,6 +10,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Enumeration;
 
+/**
+ * This handles all of the Request and Response parsing for Users.
+ * @author Mikayla Pickett
+ * @version 1.0
+ */
 public class UserController extends AbstractController{
 
     private UserService userService = new UserService();
@@ -29,7 +34,6 @@ public class UserController extends AbstractController{
         String username = req.getParameter("username");
         String password = req.getParameter("password");
         try {
-            if(params.hasMoreElements()) {
                 if(password!= null && username != null) {
                     res.getWriter().println(userService.getUserByLogin(username, password));
                     res.setStatus(200);
@@ -41,14 +45,10 @@ public class UserController extends AbstractController{
                     String js = gson.toJson(userService.getUserById(intId));
                     res.getWriter().println(js);
                     res.setStatus(200);
-                } else {
-                    res.setStatus(400);
-                }
-            }
-             else {
+                }  else {
                 res.getWriter().println(userService.fetchAllUsers());
                 res.setStatus(200);
-            }
+                }
 
         } catch (IOException e) {
             res.setStatus(400);

@@ -12,6 +12,11 @@ import org.apache.log4j.Logger;
 import com.refactorhythm.dao.UserDao;
 import com.refactorhythm.model.User;
 
+/**
+ * This handles all Business Logic for User.
+ * @author Mikayla Pickett
+ * @version 1.0
+ */
 public class UserService {
 	private UserDao ud;
 	private Gson gson = new Gson();
