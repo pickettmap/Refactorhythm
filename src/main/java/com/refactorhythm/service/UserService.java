@@ -25,7 +25,6 @@ public class UserService {
 	 * Calls the DAO to create a user object based on json input.
 	 * Converts json input to User object and hashes the new user's password before saving it to the database.
 	 * @param json the JSON string to be converted by gson to a user object
-	 * @throws Exception if json cannot be converted properly.
 	 */
 	public void createUser(String json) {
 		try {
@@ -67,7 +66,6 @@ public class UserService {
 	 * Calls the DAO to update existing user object based on json input.
 	 * Converts json input to user object and updates corresponding user with any new data.
 	 * @param json the JSON string to be converted by gson to a user object
-	 * @throws Exception if json cannot be converted properly.
 	 */
 	public void updateUser(String json){
 		try {
@@ -92,7 +90,7 @@ public class UserService {
 			noPasswordUsers.add(u);
 		}
 
-		return null;
+		return noPasswordUsers;
 	}
 
 	/**

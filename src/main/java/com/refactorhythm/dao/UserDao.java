@@ -47,7 +47,7 @@ public class UserDao implements GenericDao <User> {
 
 	/**
 	 * This returns a single user by primary key user_id
-	 * @param id
+	 * @param id userId of the user.
 	 * @return Returns user object
 	 */
 	@Override
@@ -59,7 +59,7 @@ public class UserDao implements GenericDao <User> {
 
 	/**
 	 * This returns a single user with matching username
-	 * @param username
+	 * @param username username of the user.
 	 * @return Returns user object
 	 */
 	public User getByUsername(String username) {
@@ -96,8 +96,8 @@ public class UserDao implements GenericDao <User> {
 	}
 
 	/**
-	 * Deletes corresponing user from the database
-	 * @param u user objectg to be deleted from the database
+	 * Deletes corresponding user from the database
+	 * @param u user object to be deleted from the database
 	 */
 	@Override
 	public void delete(User u) {

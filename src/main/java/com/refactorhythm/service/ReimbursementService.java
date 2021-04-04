@@ -53,7 +53,7 @@ public class ReimbursementService {
 
 	/**
 	 * This calls the DAO and returns a list of all Reimbursements for a given user.
-	 * @param id the userId -> author.
+	 * @param id the author.
 	 * @return Returns a list of Reimbursement objects.
 	 */
 	public List<Reimbursement> getReimbursementsByUserID(int id) {

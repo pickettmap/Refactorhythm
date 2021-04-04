@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  * A set of contractual functionality for the concrete DAOs.
- * @param <T>
+ * @param <T> the object to instantiate the dao.
  */
 public interface GenericDao <T> {
 	List<T> getList();
