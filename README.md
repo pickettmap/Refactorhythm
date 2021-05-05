@@ -21,14 +21,12 @@ List of features ready and TODOs for future development
 * Full Refactor of Existing JDBC Implementation to utilize Hibernate
 
 ## Getting Started
-> 
-git clone https://github.com/pickettmap/refactorhythm.git
 
-> 
-gh repo clone pickettmap/refactorhythm
+HTTPS
+> git clone https://github.com/pickettmap/refactorhythm.git
 
-- All the `code` required to get started
-- Images of what it should look like
+GitCLI
+> gh repo clone pickettmap/refactorhythm
 
 ## Contributors
 
