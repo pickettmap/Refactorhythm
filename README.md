@@ -16,9 +16,8 @@ ERS Refactor Project. Refactor an existing application to implement Servlets API
 * AWS RDS
 
 ## Features
-
-List of features ready and TODOs for future development
-* Full Refactor of Existing JDBC Implementation to utilize Hibernate
+* Full Refactor of Existing JDBC Implementation to utilize Hibernate.
+* Fully Dynamic Relational Mapping
 
 ## Getting Started
 
