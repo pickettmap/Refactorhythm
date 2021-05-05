@@ -22,5 +22,5 @@ List of features ready and TODOs for future development
 
 ## Contributors
 
-* Brandon Pinkerton
-* Mikayla Pickett
+> Brandon Pinkerton
+> Mikayla Pickett
